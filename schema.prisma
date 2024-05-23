@@ -1,0 +1,26 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL") // uses connection pooling
+  directUrl = env("DIRECT_URL") // uses a direct connection
+}
+
+model Sequence {
+  id        String     @default(cuid()) @id
+  seq       String
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  String?
+  @@map(name: "sequences")
+}
+
+model User {
+  id            String       @default(cuid()) @id
+  email         String?   @unique
+  posts         Sequence[]
+  @@map(name: "users")
+}
