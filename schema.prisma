@@ -5,22 +5,30 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // uses connection pooling
   directUrl = env("DIRECT_URL") // uses a direct connection
 }
 
 model Sequence {
-  id        String     @default(cuid()) @id
+  id        String  @id @default(cuid())
   seq       String
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
+  seqName   String  @unique
+  // author    User?   @relation(fields: [authorId], references: [id])
+  // authorId  String?
+  matches   Match[] @relation("matches")
+  matchedIn Match[] @relation("matchedIn")
+
   @@map(name: "sequences")
 }
 
-model User {
-  id            String       @default(cuid()) @id
-  email         String?   @unique
-  posts         Sequence[]
-  @@map(name: "users")
+model Match {
+  id        String   @id @default(cuid())
+  queryid   String
+  subjectid String
+  identity Float
+  query     Sequence @relation("matches", fields: [queryid], references: [id])
+  subject   Sequence @relation("matchedIn", fields: [subjectid], references: [id])
+
+  @@map(name: "matches")
 }

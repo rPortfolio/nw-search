@@ -5,7 +5,8 @@ import Error from 'next/error';
 
 export default function AddSeqPanel() {
   const [errMsg, setErrMsg] = useState('');
-  const [content, setContent] = useState('');
+  const [seq, setContent] = useState('');
+  const [seqName, setName] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (event: any) => {
@@ -17,7 +18,7 @@ export default function AddSeqPanel() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ seq: content }),
+        body: JSON.stringify({ seq, seqName }),
       });
 
       if (result.status == 452) {
@@ -36,30 +37,46 @@ export default function AddSeqPanel() {
     }
 
     setContent('');
+    setName('');
   };
 
   return (
-    <div>
-      <h1 className="underline text-4xl">Add Post</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="content">Content:</label>
-          <input
-            type="content"
-            id="content"
-            value={content}
-            onChange={(e: any) => {
-              setContent(e.target.value);
-            }}
-            required
-            className="mt-1 outline outline-gray-400"
-          />
-        </div>
-        <button type="submit" className="underline text-blue-700 mb-1">
-          Submit
-        </button>
-        <p>{errMsg}</p>
-      </form>
+    <div className="border-2 border-gray-500 flex justify-center">
+      <div>
+        <h1 className="underline text-2xl block text-center">Add Post</h1>
+        <form onSubmit={handleSubmit} className="">
+          <div>
+            <label htmlFor="content">Content:</label>
+            <input
+              type="seq"
+              id="seq"
+              value={seq}
+              onChange={(e: any) => {
+                setContent(e.target.value);
+              }}
+              required
+              className="mt-1 border-b-2 border-cyan-800"
+            />
+          </div>
+          <div>
+            <label htmlFor="name">Sequence Name:</label>
+            <input
+              type="name"
+              id="name"
+              value={seqName}
+              onChange={(e: any) => {
+                setName(e.target.value);
+              }}
+              required
+              className="mt-1 border-b-2 border-cyan-800"
+            />
+          </div>
+          <button type="submit" className="underline text-cyan-800 mb-1">
+            Submit
+          </button>
+          <p>{errMsg}</p>
+        </form>
+      </div>
     </div>
   );
 }

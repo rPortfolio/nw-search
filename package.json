@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "^5.15.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18"
@@ -23,7 +23,7 @@
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8",
     "prettier": "^3.2.5",
-    "prisma": "^5.13.0",
+    "prisma": "^5.15.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

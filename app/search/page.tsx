@@ -1,12 +1,12 @@
 'use client';
 import { Sequence } from '@prisma/client';
 import { FormEvent, useState } from 'react';
-import GETCONTAINS from './get-matches';
-import SeqList from '../components/SeqList';
+import { search, searchResult } from './get-matches';
+import SeqList from '@/components/SeqList';
 
 export default function Search() {
-  const [search, setSearch] = useState('');
-  const [results, setResults] = useState<Array<Sequence> | null>([]);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<Array<searchResult> | null>([]);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!search) {
@@ -14,7 +14,7 @@ export default function Search() {
       return;
     }
     setResults(null);
-    const data: Array<Sequence> = await GETCONTAINS(search);
+    const data: Array<searchResult> = await search(query);
     console.log(data);
     setResults(data);
   };
@@ -25,12 +25,12 @@ export default function Search() {
         <input
           type="text"
           onChange={(e) => {
-            setSearch(e.target.value);
+            setQuery(e.target.value);
           }}
         />
         <button type="submit">Search</button>
       </form>
-      {results && results.length > 0 && <SeqList sequences={results} />}
+      {results && results.length > 0 && <SeqList results={results} />}
       {results && results.length == 0 && <p>No Results</p>}
       {results == null && <p>Loading</p>}
     </>

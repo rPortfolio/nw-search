@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: any): Promise<NextResponse> {
   const res = await request.json();
-  const { seq } = res;
+  const { seq, seqName } = res;
   for (let i = 0; i < seq.length; i++) {
     if ('ATGC'.indexOf(seq[i]) < 0) {
       return NextResponse.json({ data: res }, { status: 412 });
@@ -21,7 +21,8 @@ export async function POST(request: any): Promise<NextResponse> {
   }
   const result = await prisma.sequence.create({
     data: {
-      seq: seq,
+      seq,
+      seqName,
     },
   });
   console.log(result);
